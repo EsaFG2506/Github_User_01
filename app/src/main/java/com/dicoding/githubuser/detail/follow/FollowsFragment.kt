@@ -16,8 +16,8 @@ class FollowsFragment : Fragment() {
     private var binding: FragmentFollowsBinding? = null
     private lateinit var adapter: UserAdapter
     private val viewModel by viewModels<DetailViewModel>()
+
     var type = 0
-    private var username = ""
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -30,11 +30,6 @@ class FollowsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.let {
-            type = it.getInt(ARG_POSITION)
-            username = it.getString(ARG_USERNAME, "")
-        }
-
         adapter = UserAdapter()
 
         binding?.rvFollow?.apply {
@@ -45,35 +40,47 @@ class FollowsFragment : Fragment() {
 
         when (type) {
             FOLLOWERS -> {
-                viewModel.loadFollowers(username)
-                viewModel.followers.observe(viewLifecycleOwner) { followersList ->
+                viewModel.followers.observe(requireActivity()) { followersList ->
                     adapter.submitList(followersList)
+                    binding?.rvFollow?.adapter = adapter
                 }
             }
             FOLLOWING -> {
-                viewModel.loadFollowings(username)
-                viewModel.followings.observe(viewLifecycleOwner) { followingList ->
+                viewModel.followings.observe(requireActivity()) { followingList ->
                     adapter.submitList(followingList)
+                    binding?.rvFollow?.adapter = adapter
                 }
+            }
+        }
+
+        viewModel.isLoading.observe(requireActivity()) { isLoading ->
+            if (isLoading) {
+                binding?.loadFrag?.visibility = View.VISIBLE
+            } else {
+                binding?.loadFrag?.visibility = View.GONE
             }
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        if (type == FOLLOWERS) {
+            viewModel.loadFollowers(username = "esa")
+        } else {
+            viewModel.loadFollowings(username = "esa")
+        }
+    }
 
 
     companion object {
         const val FOLLOWING = 100
         const val FOLLOWERS = 101
-        const val ARG_POSITION = "arg_position"
-        const val ARG_USERNAME = "arg_username"
 
-
-        fun newInstance(type: Int, username: String) = FollowsFragment().apply {
-            arguments = Bundle().apply {
-                putInt(ARG_POSITION, type)
-                putString(ARG_USERNAME, username)
+        fun newInstance(type: Int) = FollowsFragment()
+            .apply {
+                this.type = type
             }
-        }
     }
 
 }
