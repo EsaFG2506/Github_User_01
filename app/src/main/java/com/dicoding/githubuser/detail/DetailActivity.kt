@@ -5,8 +5,11 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.dicoding.githubuser.R
 import com.dicoding.githubuser.databinding.ActivityDetailBinding
+import com.dicoding.githubuser.detail.follow.FollowsFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -44,13 +47,19 @@ class DetailActivity : AppCompatActivity() {
         }
         viewModel.setUserDetail(username)
 
-        val sectionPagerAdapter = SectionsPagerAdapter(this)
-        val viewPager = binding.viewpager
-        viewPager.adapter = sectionPagerAdapter
+        val fragments = mutableListOf<Fragment>(
+            FollowsFragment.newInstance(FollowsFragment.FOLLOWERS),
+            FollowsFragment.newInstance(FollowsFragment.FOLLOWING)
+        )
+        val titleFragments = mutableListOf(
+            getString(R.string.follower), getString(R.string.following)
+        )
 
-        val tabLayout = binding.tab
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = sectionPagerAdapter.getPageTitle(position)
+        val adapter = SectionsPagerAdapter(this, fragments)
+        binding.viewpager.adapter = adapter
+
+        TabLayoutMediator(binding.tab, binding.viewpager) { tab, posisi ->
+            tab.text = titleFragments[posisi]
         }.attach()
 
         binding.tab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
