@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Github User</string>
+    <string name="tv_username">Username</string>
+    <string name="iv_for_avatar">iv for avatar</string>
+    <string name="username">Username</string>
+    <string name="url">Url</string>
+    <string name="nama_asli">Nama Asli</string>
+    <string name="follower">Followers</string>
+    <string name="following">Following</string>
+    <string name="detail_tab_layout">Detail Tab Layout</string>
+    <string name="following_number">Following Number</string>
+    <string name="follower_count">Follower Count</string>
+    <string-array name="tab_titles">
+        <item>Followers</item>
+        <item>Following</item>
+    </string-array>
+</resources>
