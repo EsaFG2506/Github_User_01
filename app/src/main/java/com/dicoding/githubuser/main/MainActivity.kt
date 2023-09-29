@@ -1,10 +1,10 @@
 package com.dicoding.githubuser.main
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.githubuser.data.response.UserItem
@@ -13,7 +13,7 @@ import com.dicoding.githubuser.detail.DetailActivity
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: UserAdapter
     private val viewModel by viewModels<MainViewModel>()
 
@@ -25,10 +25,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         adapter = UserAdapter()
-        adapter.setOnItemClickCallback(object : UserAdapter.OnItemClickCallback{
+        adapter.setOnItemClickCallback(object : UserAdapter.OnItemClickCallback {
             override fun onItemClicked(data: UserItem) {
                 Intent(this@MainActivity, DetailActivity::class.java).also {
-                    it.putExtra(DetailActivity.EXTRA_USERNAME, data.login)
+                    it.putExtra(DetailActivity.EXTRA_USER_ITEM, data)
                     startActivity(it)
                 }
             }
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
             })
         }
 
-        viewModel.listUsers.observe(this){ users ->
+        viewModel.listUsers.observe(this) { users ->
             adapter.submitList(users)
         }
 
@@ -65,5 +65,4 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
 }

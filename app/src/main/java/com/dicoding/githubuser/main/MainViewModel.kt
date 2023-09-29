@@ -20,7 +20,7 @@ class MainViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    companion object{
+    companion object {
         private const val TAG = "MainViewModel"
     }
 
@@ -30,32 +30,35 @@ class MainViewModel : ViewModel() {
 
     private fun setUsers() {
         _isLoading.value = true
-       ApiConfig.apiService
-           .getUser("Esa")
-           .enqueue(object : Callback<GithubResponse>{
-               override fun onResponse(
-                   call: Call<GithubResponse>,
-                   response: Response<GithubResponse>
-               ) {
-                   _isLoading.value = false
-                   if (response.isSuccessful){
-                       _listUsers.postValue(response.body()?.items)
-                   }
-               }
+        ApiConfig.apiService
+            .getUser("Esa")
+            .enqueue(object : Callback<GithubResponse> {
+                override fun onResponse(
+                    call: Call<GithubResponse>,
+                    response: Response<GithubResponse>
+                ) {
+                    _isLoading.value = false
+                    if (response.isSuccessful) {
+                        _listUsers.postValue(response.body()?.items)
+                    }
+                }
 
-               override fun onFailure(call: Call<GithubResponse>, t: Throwable) {
-                   _isLoading.value = false
-                   Log.e(TAG, "Error: ${t.message}")
-                   t.printStackTrace()
-               }
+                override fun onFailure(call: Call<GithubResponse>, t: Throwable) {
+                    _isLoading.value = false
+                    Log.e(TAG, "Error: ${t.message}")
+                    t.printStackTrace()
+                }
 
-           })
+            })
     }
 
     fun searchUsers(query: String) {
         _isLoading.value = true
         ApiConfig.apiService.getUser(query).enqueue(object : Callback<GithubResponse> {
-            override fun onResponse(call: Call<GithubResponse>, response: Response<GithubResponse>) {
+            override fun onResponse(
+                call: Call<GithubResponse>,
+                response: Response<GithubResponse>
+            ) {
                 _isLoading.value = false
                 if (response.isSuccessful) {
                     _listUsers.postValue(response.body()?.items)

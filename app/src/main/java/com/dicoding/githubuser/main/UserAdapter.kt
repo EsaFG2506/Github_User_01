@@ -15,7 +15,7 @@ class UserAdapter : ListAdapter<UserItem, UserAdapter.MyViewHolder>(DIFF_CALLBAC
 
     private var onItemClickCallback: OnItemClickCallback? = null
 
-    fun setOnItemClickCallback (onItemClickCallback: OnItemClickCallback){
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }
 
@@ -30,8 +30,9 @@ class UserAdapter : ListAdapter<UserItem, UserAdapter.MyViewHolder>(DIFF_CALLBAC
         holder.bind(item)
     }
 
-    inner class MyViewHolder(private val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(user: UserItem){
+    inner class MyViewHolder(private val binding: ItemUserBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(user: UserItem) {
             binding.apply {
                 tvUsername.text = user.login
                 tvUrl.text = user.htmlUrl
@@ -53,7 +54,7 @@ class UserAdapter : ListAdapter<UserItem, UserAdapter.MyViewHolder>(DIFF_CALLBAC
             .into(this)
     }
 
-    interface OnItemClickCallback{
+    interface OnItemClickCallback {
         fun onItemClicked(data: UserItem)
     }
 

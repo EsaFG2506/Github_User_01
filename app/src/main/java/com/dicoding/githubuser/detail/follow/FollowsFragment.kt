@@ -1,10 +1,10 @@
 package com.dicoding.githubuser.detail.follow
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.githubuser.databinding.FragmentFollowsBinding
@@ -22,8 +22,10 @@ class FollowsFragment : Fragment() {
     var type = 0
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         binding = FragmentFollowsBinding.inflate(layoutInflater)
         return binding?.root
