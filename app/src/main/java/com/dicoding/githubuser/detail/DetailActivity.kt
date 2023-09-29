@@ -15,10 +15,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class DetailActivity : AppCompatActivity() {
 
-    companion object {
-        const val EXTRA_USERNAME = "extra_username"
-    }
-
     private lateinit var binding: ActivityDetailBinding
     private val viewModel by viewModels<DetailViewModel>()
 
@@ -47,10 +43,18 @@ class DetailActivity : AppCompatActivity() {
         }
         viewModel.setUserDetail(username)
 
+        val followersFragment = FollowsFragment.newInstance(FollowsFragment.FOLLOWERS)
+        val followingFragment = FollowsFragment.newInstance(FollowsFragment.FOLLOWING)
+
+
+        followersFragment.setUsername(username)
+        followingFragment.setUsername(username)
+
         val fragments = mutableListOf<Fragment>(
-            FollowsFragment.newInstance(FollowsFragment.FOLLOWERS),
-            FollowsFragment.newInstance(FollowsFragment.FOLLOWING)
+            followersFragment,
+            followingFragment
         )
+
         val titleFragments = mutableListOf(
             getString(R.string.follower), getString(R.string.following)
         )
@@ -62,11 +66,12 @@ class DetailActivity : AppCompatActivity() {
             tab.text = titleFragments[posisi]
         }.attach()
 
+        viewModel.loadFollowers(username)
         binding.tab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                if (tab?.position == 0){
+                if (tab?.position == 0 && viewModel.followers.value == null){
                     viewModel.loadFollowers(username)
-                } else {
+                } else if (tab?.position == 1 && viewModel.followings.value == null) {
                     viewModel.loadFollowings(username)
                 }
             }
@@ -79,8 +84,6 @@ class DetailActivity : AppCompatActivity() {
 
             }
         })
-        viewModel.loadFollowers(username)
-
 
         viewModel.isLoading.observe(this) { isLoading ->
             if (isLoading) {
@@ -98,5 +101,9 @@ class DetailActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    companion object {
+        const val EXTRA_USERNAME = "extra_username"
     }
 }

@@ -1,6 +1,6 @@
 package com.dicoding.githubuser.data.retrofit
 
-import com.dicoding.githubuser.BuildConfig
+
 import com.dicoding.githubuser.data.response.GithubDetailResponse
 import com.dicoding.githubuser.data.response.GithubResponse
 import com.dicoding.githubuser.data.response.UserItem
@@ -11,29 +11,21 @@ interface ApiService {
 
     @GET("search/users")
     fun getUser(
-        @Query("q") query: String,
-        @Header("Authorization")
-        authorization: String = BuildConfig.TOKEN
+        @Query("q") query: String
     ): Call<GithubResponse>
 
     @GET("users/{username}")
     fun getUserDetail(
-        @Path("username") username: String,
-        @Header("Authorization")
-        authorization: String = BuildConfig.TOKEN
+        @Path("username") username: String
     ): Call<GithubDetailResponse>
 
     @GET("/users/{username}/followers")
     fun getFollowers(
-        @Path("username") username: String,
-        @Header("Authorization")
-        authorization: String = BuildConfig.TOKEN
+        @Path("username") username: String
     ): Call<List<UserItem>>
 
     @GET("/users/{username}/following")
     fun getFollowing(
-        @Path("username") username: String,
-        @Header("Authorization")
-        authorization: String = BuildConfig.TOKEN
+        @Path("username") username: String
     ): Call<List<UserItem>>
 }

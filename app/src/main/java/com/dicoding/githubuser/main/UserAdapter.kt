@@ -2,10 +2,12 @@ package com.dicoding.githubuser.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.dicoding.githubuser.data.response.UserItem
 import com.dicoding.githubuser.databinding.ItemUserBinding
 
@@ -30,17 +32,25 @@ class UserAdapter : ListAdapter<UserItem, UserAdapter.MyViewHolder>(DIFF_CALLBAC
 
     inner class MyViewHolder(private val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(user: UserItem){
+            binding.apply {
+                tvUsername.text = user.login
+                tvUrl.text = user.htmlUrl
+                ivUser.loadImage(user.avatarUrl)
 
-            binding.root.setOnClickListener {
-                onItemClickCallback?.onItemClicked(user)
+                root.setOnClickListener {
+                    onItemClickCallback?.onItemClicked(user)
+                }
             }
 
-            binding.tvUsername.text = user.login
-            binding.tvUrl.text = user.htmlUrl
-            Glide.with(binding.root.context)
-                .load(user.avatarUrl)
-                .into(binding.ivUser)
         }
+    }
+
+    fun ImageView.loadImage(url: String?) {
+        Glide.with(this.context)
+            .load(url)
+            .apply(RequestOptions().override(500, 500))
+            .centerCrop()
+            .into(this)
     }
 
     interface OnItemClickCallback{

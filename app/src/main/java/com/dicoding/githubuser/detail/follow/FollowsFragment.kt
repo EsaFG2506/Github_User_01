@@ -17,6 +17,8 @@ class FollowsFragment : Fragment() {
     private lateinit var adapter: UserAdapter
     private val viewModel by viewModels<DetailViewModel>()
 
+
+    private var username: String = ""
     var type = 0
 
 
@@ -66,10 +68,14 @@ class FollowsFragment : Fragment() {
         super.onResume()
 
         if (type == FOLLOWERS) {
-            viewModel.loadFollowers(username = "esa")
+            viewModel.loadFollowers(username)
         } else {
-            viewModel.loadFollowings(username = "esa")
+            viewModel.loadFollowings(username)
         }
+    }
+
+    fun setUsername(username: String) {
+        this.username = username
     }
 
 
